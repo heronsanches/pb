@@ -28,9 +28,6 @@ public class Horario {
 	public int getCod() {
 		return cod;
 	}
-	public void setCod(int cod) {
-		this.cod = cod;
-	}
 	public Date getHora_inicio() {
 		return hora_inicio;
 	}

@@ -13,7 +13,7 @@ public class DB {
 	private static String password = "";
 	private static String url = "jdbc:mysql://localhost:3306/";
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_NAME = "monitoria_mysql";
+	private static final String DB_NAME = "monitoria";
 	
 	private static void makeConnection() {
 		try {
