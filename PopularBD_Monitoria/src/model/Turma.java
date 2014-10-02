@@ -9,7 +9,7 @@ import java.util.Date;
 public class Turma {
 
 	/**pk varchar(6)*/
-	private int numero;
+	private String numero;
 	
 	/**fpk varchar(10) */
 	private String disciplina_cod;
@@ -21,10 +21,11 @@ public class Turma {
 	private Date data_fim;
 	
 	
-	public int getNumero() {
+	
+	public String getNumero() {
 		return numero;
 	}
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 	public String getDisciplina_cod() {

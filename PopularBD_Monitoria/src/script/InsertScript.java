@@ -6,10 +6,12 @@ import model.Departamento;
 import model.Disciplina;
 import model.Horario;
 import model.Semestre;
+import model.Turma;
 import model.persistence.DepartamentoDAO;
 import model.persistence.DisciplinaDAO;
 import model.persistence.HorarioDAO;
 import model.persistence.SemestreDAO;
+import model.persistence.TurmaDAO;
 
 public class InsertScript {
 	
@@ -126,15 +128,56 @@ private static void insertSemestre(){
 		}
 	
 	}
+
+private static void insertTurma(){
+	
+	TurmaDAO td = new TurmaDAO();
+	Turma t;
+	String mat = "MAT";
+	long ano = 3600000*24*30*12;
+	long mes = 3600000*24*30;
+	long dia = 3600000*24;
+	
+	Date d = new Date(0);
+	byte se = 1;
+	
+	for(int i=1970, n=1; i<2015; n++){
+		
+		t = new Turma();
+		
+		if(se%2 != 0){ //primeiro semestre
+			
+			t.setSemestre_data_inicio(new Date(d.getTime()+(mes+dia)*2));
+			t.setNumero(String.valueOf(n));
+			t.setDisciplina_cod(mat+n);
+			td.insert(t);
+			se++;
+		
+		}else{
+			
+			t.setSemestre_data_inicio(new Date(d.getTime()+(mes+dia)*7));
+			t.setNumero(String.valueOf(n));
+			t.setDisciplina_cod(mat+n);
+			td.insert(t);
+			i++;
+			se = 1;
+			d = new Date(d.getTime()+ano+dia);
+			
+		}
+		
+	}
+
+}
 	
 
 	
 	public static void main(String args[]){
 		
-		//insertDepartamento();
-		//insertDisciplina();
-		//insertHorario();
-		//insertSemestre();
+		insertDepartamento();
+		insertDisciplina();
+		insertHorario();
+		insertSemestre();
+		insertTurma();
 		
 	}
 
