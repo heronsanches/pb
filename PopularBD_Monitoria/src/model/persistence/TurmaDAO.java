@@ -9,6 +9,7 @@ import model.DB;
 import model.Turma;
 
 public class TurmaDAO {
+	
 
 public int insert(Turma t){
 		
@@ -17,7 +18,7 @@ public int insert(Turma t){
 		try {
 			
 			PreparedStatement preparedStatement = DB.getConnectionDB().prepareStatement("insert into " +
-				DB.getDbName()+".turma values (?, ?, ?, ?)");
+				DB.getDbName()+".turma values (?, ?, ?, ?, ?)");
 		
 			preparedStatement.setString(1, t.getNumero());
 			preparedStatement.setString(2, t.getDisciplina_cod());
@@ -52,4 +53,5 @@ public int insert(Turma t){
 		return count;
 		
 	}
+
 }

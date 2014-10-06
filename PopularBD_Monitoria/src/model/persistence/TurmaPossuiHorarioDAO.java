@@ -1,28 +1,29 @@
 package model.persistence;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import model.DB;
-import model.Disciplina;
+import model.TurmaPossuiHorario;
 
-public class DisciplinaDAO {
-
+public class TurmaPossuiHorarioDAO {
 	
-	public int insert(Disciplina disciplina){
+public int insert(TurmaPossuiHorario tph){
 		
 		int count = 0;
 
 		try {
 			
 			PreparedStatement preparedStatement = DB.getConnectionDB().prepareStatement("insert into " +
-				DB.getDbName()+".disciplina values (?, ?, ?)");
+				DB.getDbName()+".turma_possui_horario values (?, ?, ?, ?)");
 		
-			preparedStatement.setString(1, disciplina.getCod());
-			preparedStatement.setString(2, disciplina.getNome());
-			preparedStatement.setInt(3, disciplina.getDepartamento_cod());
-			
-			count = preparedStatement.executeUpdate(); // update
+			preparedStatement.setString(1, tph.getNumero());
+			preparedStatement.setString(2, tph.getDisciplina_cod());
+			preparedStatement.setDate(3, new Date(tph.getSemestre_data_inicio().getTime()));
+			preparedStatement.setInt(4, tph.getCod());
+					
+			count = preparedStatement.executeUpdate();
 			preparedStatement.close();
 		
 		} catch (SQLException e) {
@@ -40,8 +41,5 @@ public class DisciplinaDAO {
 		return count;
 		
 	}
-	
-	
-	
-	
+
 }

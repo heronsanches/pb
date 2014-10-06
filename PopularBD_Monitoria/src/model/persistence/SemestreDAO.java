@@ -26,7 +26,7 @@ public int insert(Semestre s){
 			else
 				preparedStatement.setNull(3, java.sql.Types.NULL);
 			
-			preparedStatement.setByte(4, s.getPeriodo_nominal());
+			preparedStatement.setString(4, s.getPeriodo_nominal());
 			
 			count = preparedStatement.executeUpdate(); // update
 			preparedStatement.close();

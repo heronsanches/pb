@@ -17,8 +17,8 @@ public class Semestre {
 
 	private Date data_fim;
 	
-	/** pode ser somente 1 ou 2*/
-	private byte periodo_nominal;
+	/**varchar(1) pode ser somente 1 ou 2*/
+	private String periodo_nominal;
 	
 
 	//getters and setters
@@ -46,14 +46,14 @@ public class Semestre {
 		this.data_fim = data_fim;
 	}
 
-	public byte getPeriodo_nominal() {
+	public String getPeriodo_nominal() {
 		return periodo_nominal;
 	}
 
-	public void setPeriodo_nominal(byte periodo_nominal) {
+	public void setPeriodo_nominal(String periodo_nominal) {
 		this.periodo_nominal = periodo_nominal;
 	}
-	
+
 	
 	
 }
