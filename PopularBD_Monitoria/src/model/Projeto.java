@@ -14,7 +14,7 @@ public class Projeto {
 	/**fk integer*/
 	private int edital_cod;
 	
-	/**boolean, it shows the approved status of this project by ufba */
+	/**boolean not null, it shows the approved status of this project by ufba */
 	private boolean status;
 	
 	/**varchar(400) not null*/
@@ -40,7 +40,7 @@ public class Projeto {
 	 *  */
 	private Date fim_vigencia;
 	
-	/**integer, it shows the quantity of vacancies after approved by ufba */
+	/**integer not null, it shows the quantity of vacancies after approved by ufba */
 	private int qtde_vagas;
 	
 	/**varchar(1) not null, it says if the project is for a disciplina of offer semester or
@@ -52,7 +52,7 @@ public class Projeto {
 	
 	/**fk of professor varchar(15) not null*/
 	private String professor_matricula;
-
+	
 	
 	//setters and getters
 	public int getEdital_cod() {

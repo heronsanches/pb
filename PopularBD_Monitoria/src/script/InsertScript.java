@@ -7,6 +7,7 @@ import model.Disciplina;
 import model.Horario;
 import model.Professor;
 import model.ProfessorLecionaTurma;
+import model.Projeto;
 import model.Semestre;
 import model.Turma;
 import model.TurmaPossuiHorario;
@@ -15,6 +16,7 @@ import model.persistence.DisciplinaDAO;
 import model.persistence.HorarioDAO;
 import model.persistence.ProfessorDAO;
 import model.persistence.ProfessorLecionaTurmaDAO;
+import model.persistence.ProjetoDAO;
 import model.persistence.SemestreDAO;
 import model.persistence.TurmaDAO;
 import model.persistence.TurmaPossuiHorarioDAO;
@@ -27,6 +29,10 @@ public class InsertScript {
 	private static final String RDE = "DE";
 	private static final String R40 = "40H";
 	private static final String R20 = "20H";
+	private static final String ATIVIDADES_GERAIS = "Atividades Gerais ";
+	private static final String DESCRICAO = "Descricao ";
+	private static final String TIPO_PROJETO_SEMESTRAL = "S";
+	private static final String TIPO_PROJETO_ANUAL = "A";
 	private static final long HOUR = 3600000;
 	private static final long DIA = 3600000L*24;
 	private static final long MES = 3600000L*24*30L;
@@ -290,6 +296,31 @@ private static void insertProfessorLecionaTurma(){
 }
 
 
+private static void insertProjeto(){
+	
+	ProjetoDAO pd = new ProjetoDAO();
+	Projeto p;
+	
+	for(int i=1; i<QTDE_INSERT; i++){
+		
+		p = new Projeto();
+		p.setAtividades_gerais(ATIVIDADES_GERAIS+i);
+		p.setDescricao(DESCRICAO+i);
+
+		if(i % 2 == 0)
+			p.setTipo(TIPO_PROJETO_ANUAL);
+		else
+			p.setTipo(TIPO_PROJETO_SEMESTRAL);	
+		
+		p.setDisciplina_cod(MATA+i);
+		p.setProfessor_matricula(String.valueOf(i));
+		
+		pd.insert(p);
+
+	}
+
+}
+
 	
 	public static void main(String args[]){
 		
@@ -297,10 +328,12 @@ private static void insertProfessorLecionaTurma(){
 		insertDisciplina();
 		insertHorario();
 		insertSemestre();
-		insertTurma();*/
+		insertTurma();
 		insertTurmaPossuiHorario();
 		insertProfessor();
-		insertProfessorLecionaTurma();
+		insertProfessorLecionaTurma();*/
+		//insertProjeto();
+		
 		
 		
 	}
