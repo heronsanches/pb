@@ -2,21 +2,27 @@ package script;
 
 import java.util.Date;
 
+import model.Bolsa;
 import model.Departamento;
 import model.Disciplina;
+import model.Edital;
 import model.Horario;
 import model.Professor;
 import model.ProfessorLecionaTurma;
 import model.Projeto;
+import model.Relatorio;
 import model.Semestre;
 import model.Turma;
 import model.TurmaPossuiHorario;
+import model.persistence.BolsaDAO;
 import model.persistence.DepartamentoDAO;
 import model.persistence.DisciplinaDAO;
+import model.persistence.EditalDAO;
 import model.persistence.HorarioDAO;
 import model.persistence.ProfessorDAO;
 import model.persistence.ProfessorLecionaTurmaDAO;
 import model.persistence.ProjetoDAO;
+import model.persistence.RelatorioDAO;
 import model.persistence.SemestreDAO;
 import model.persistence.TurmaDAO;
 import model.persistence.TurmaPossuiHorarioDAO;
@@ -33,6 +39,12 @@ public class InsertScript {
 	private static final String DESCRICAO = "Descricao ";
 	private static final String TIPO_PROJETO_SEMESTRAL = "S";
 	private static final String TIPO_PROJETO_ANUAL = "A";
+	private static final String ARQUIVO_RELATORIO = "Relatótio ";
+	private static final String RELATORIO_PROFESSOR = "P";
+	private static final String RELATORIO_MONITOR= "M";
+	private static final String INFORMACOES_ADICIONAIS= "Informações Adicionais ";
+	private static final String DOCUMENTOS_NECESSARIOS= "Documentos Necessários ";
+
 	private static final long HOUR = 3600000;
 	private static final long DIA = 3600000L*24;
 	private static final long MES = 3600000L*24*30L;
@@ -300,22 +312,132 @@ private static void insertProjeto(){
 	
 	ProjetoDAO pd = new ProjetoDAO();
 	Projeto p;
+	long atual =1412713442387L; // October 7th, 2014
+	long sem = 36000000L*180;
+	long anual = 2*sem;
 	
-	for(int i=1; i<QTDE_INSERT; i++){
+	
+	for(int i=1; i<(QTDE_INSERT/2); i++){
 		
 		p = new Projeto();
 		p.setAtividades_gerais(ATIVIDADES_GERAIS+i);
 		p.setDescricao(DESCRICAO+i);
-
-		if(i % 2 == 0)
-			p.setTipo(TIPO_PROJETO_ANUAL);
-		else
-			p.setTipo(TIPO_PROJETO_SEMESTRAL);	
+		p.setTipo(TIPO_PROJETO_ANUAL);
+		p.setDisciplina_cod(MATA+i);
+		p.setInicio_vigencia(new Date(atual));//TODO
+		p.setStatus(true);//TODO
+		p.setProfessor_matricula(String.valueOf(i));
 		
+		pd.insert(p);
+		atual += anual;
+
+	}
+	
+	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
+		
+		p = new Projeto();
+		p.setAtividades_gerais(ATIVIDADES_GERAIS+i);
+		p.setDescricao(DESCRICAO+i);
+		p.setTipo(TIPO_PROJETO_SEMESTRAL);	
+		p.setInicio_vigencia(new Date(atual));//TODO
+		p.setStatus(true);//TODO
 		p.setDisciplina_cod(MATA+i);
 		p.setProfessor_matricula(String.valueOf(i));
 		
 		pd.insert(p);
+		atual += sem;
+
+	}
+
+}
+
+//TODO to test?
+private static void insertRelatorio(){
+	
+	RelatorioDAO rd = new RelatorioDAO();
+	Relatorio r;
+	long atual = new Date(0).getTime();
+	long dia = 36000000L;
+	
+for(int i=1; i<QTDE_INSERT; i++){
+		
+		r = new Relatorio();
+		r.setData_criacao(new Date(atual));
+		r.setArquivo_relatorio(ARQUIVO_RELATORIO+i);
+		
+
+		if(i % 2 == 0)
+			r.setTipo(RELATORIO_MONITOR);
+		else{
+			
+			r.setTipo(RELATORIO_PROFESSOR);
+			r.setNota_conceito(i%10);
+					
+		}
+		
+		r.setDescricao(DESCRICAO+i);
+		r.setProjeto_cod(i);
+		
+		rd.insert(r);
+		atual += dia;
+
+	}
+}
+
+
+//TODO to test? verifying data
+private static void insertEdital(){
+	
+	EditalDAO ed = new EditalDAO();
+	Edital e;
+	long atual =1412713442387L; // October 7th, 2014
+	long sem = 36000000L*180;
+	long dia10 = 36000000L*10;
+	long anual = 2*sem;
+	
+for(int i=1; i<QTDE_INSERT/2; i++){
+		
+		e = new Edital();
+		e.setData_inicio(new Date(atual+=dia10));
+		e.setData_fim(new Date(atual+10));
+		e.setInformacoes_adicionais(INFORMACOES_ADICIONAIS+i);
+		e.setDocumentos_necessarios(DOCUMENTOS_NECESSARIOS+i);
+		
+		ed.insert(e);
+		atual += anual;
+
+	}
+}
+
+//TODO update projeto with the created editais
+
+//TODO to test? continue
+//it must update the projects before (status), before creating
+//the edital, update the data_aprovacao e etc tambem!
+private static void insertBolsa(){
+	long atual =1412713442387L; // October 7th, 2014
+	BolsaDAO bd = new BolsaDAO();
+	Bolsa b;
+	long sem = 36000000L*180;
+	long anual = 2*sem;
+	
+for(int i=1; i<(QTDE_INSERT/100); i++){
+		
+	b = new Bolsa();
+	b.setInicio_vigencia(new Date(atual));
+	b.setFim_vigencia(new Date(atual += anual));
+	
+	bd.insert(b);
+
+	}
+	
+	for(int i=QTDE_INSERT/100; i<QTDE_INSERT; i++){
+		
+		b = new Bolsa();
+		b.setInicio_vigencia(new Date(atual));
+		b.setFim_vigencia(new Date(atual += sem));
+		
+		bd.insert(b);
 
 	}
 
@@ -331,9 +453,9 @@ private static void insertProjeto(){
 		insertTurma();
 		insertTurmaPossuiHorario();
 		insertProfessor();
-		insertProfessorLecionaTurma();*/
-		//insertProjeto();
-		
+		insertProfessorLecionaTurma();
+		insertProjeto();*/
+		insertRelatorio();
 		
 		
 	}

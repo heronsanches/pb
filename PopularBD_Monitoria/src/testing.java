@@ -6,8 +6,8 @@ import model.Projeto;
 public class testing {
 
 	public static void main(String[] args) {
-		Projeto p = new Projeto();
-		System.out.println(p.getData_aprovacao());
+		java.util.Date d = new java.util.Date(1412713442387L);
+		System.out.println(d);
 
 	}
 
