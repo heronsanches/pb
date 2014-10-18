@@ -16,11 +16,13 @@ public int insert(Bolsa b){
 		try {
 			
 			PreparedStatement preparedStatement = DB.getConnectionDB().prepareStatement("insert into " +
-				DB.getDbName()+".bolsa values (default, ?, ?, ?)");
+				DB.getDbName()+".bolsa values (default, ?, ?, ?, ?)");
 		
+			System.out.println(b.getInicio_vigencia().getTime());
 			preparedStatement.setDate(1, new Date(b.getInicio_vigencia().getTime()));
 			preparedStatement.setDate(2, new Date(b.getFim_vigencia().getTime()));
-			preparedStatement.setInt(3, b.getProjeto_cod());
+			preparedStatement.setDouble(3, b.getValor());
+			preparedStatement.setInt(4, b.getProjeto_cod());
 			
 			count = preparedStatement.executeUpdate();
 			preparedStatement.close();

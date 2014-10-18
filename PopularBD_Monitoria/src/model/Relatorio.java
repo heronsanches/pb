@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Relatorio {
 	
-	/**pk integer*/
+	/**pk integer autoincrement*/
 	private int cod;
 	
 	/**date not null */
@@ -27,7 +27,7 @@ public class Relatorio {
 	
 	/**decimal(2), only relatorio do tipo relatorio_proessor
 	 * pode ter este atributo */
-	private float nota_conceito;
+	private double nota_conceito;
 	
 	/**varchar(200) not null */
 	private String descricao;
@@ -72,11 +72,11 @@ public class Relatorio {
 		this.tipo = tipo;
 	}
 
-	public float getNota_conceito() {
+	public double getNota_conceito() {
 		return nota_conceito;
 	}
 
-	public void setNota_conceito(float nota_conceito) {
+	public void setNota_conceito(double nota_conceito) {
 		this.nota_conceito = nota_conceito;
 	}
 

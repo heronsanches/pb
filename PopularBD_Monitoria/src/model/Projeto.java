@@ -44,7 +44,9 @@ public class Projeto {
 	private int qtde_vagas;
 	
 	/**varchar(1) not null, it says if the project is for a disciplina of offer semester or
-	 * only a once in a year*/
+	 * only a once in a year
+	 * A = annual project, the discipline is offered each semester
+	 * S = semester project, the discipline is offered only a once in a year */
 	private String tipo;
 	
 	/**fk of disciplina varchar(10) not null*/

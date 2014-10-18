@@ -19,7 +19,7 @@ public int insert(Relatorio r){
 			PreparedStatement preparedStatement = DB.getConnectionDB().prepareStatement("insert into " +
 				DB.getDbName()+".relatorio values (default, ?, ?, ?, ?, ?, ?, ?, ?)");
 		
-			preparedStatement.setDate(1, new Date(r.getData_aprovacao().getTime()));
+			preparedStatement.setDate(1, new Date(r.getData_criacao().getTime()));
 
 			if(r.getData_aprovacao() == null)
 				preparedStatement.setNull(2, Types.NULL);
@@ -32,7 +32,7 @@ public int insert(Relatorio r){
 			if(r.getNota_conceito() == 0.0)
 				preparedStatement.setNull(5, Types.NULL);
 			else
-				preparedStatement.setFloat(5, r.getNota_conceito());
+				preparedStatement.setDouble(5, r.getNota_conceito());
 
 			preparedStatement.setString(6, r.getDescricao());
 			

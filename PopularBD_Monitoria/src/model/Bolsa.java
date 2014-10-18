@@ -14,11 +14,14 @@ public class Bolsa {
 	/**date not null */
 	private Date inicio_vigencia;
 	
-	/**date not null, this fiel change of according the type of 
+	/**date not null, this field change of according the type of 
 	 * projeto, if it is semester or annual.
 	 * The beginning date is initial+6months if project semester or
 	 * initial+12months if project is annual. */
 	private Date fim_vigencia;
+	
+	/**decimal(4,2) not null */
+	private double valor;
 	
 	/**fk integer of projeto not null */
 	private int projeto_cod;
@@ -51,6 +54,14 @@ public class Bolsa {
 
 	public int getCod() {
 		return cod;
+	}
+
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
 	}
 	
 

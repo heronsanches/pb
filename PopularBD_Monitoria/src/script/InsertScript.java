@@ -312,10 +312,10 @@ private static void insertProjeto(){
 	
 	ProjetoDAO pd = new ProjetoDAO();
 	Projeto p;
-	long atual =1412713442387L; // October 7th, 2014
-	long sem = 36000000L*180;
-	long anual = 2*sem;
-	
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long anual44 = 43L*anual;
 	
 	for(int i=1; i<(QTDE_INSERT/2); i++){
 		
@@ -324,14 +324,22 @@ private static void insertProjeto(){
 		p.setDescricao(DESCRICAO+i);
 		p.setTipo(TIPO_PROJETO_ANUAL);
 		p.setDisciplina_cod(MATA+i);
-		p.setInicio_vigencia(new Date(atual));//TODO
-		p.setStatus(true);//TODO
+		p.setInicio_vigencia(new Date(atual));
+		p.setData_aprovacao(new Date(atual));
+		p.setFim_vigencia(new Date(atual+anual));
+		p.setStatus(true);
 		p.setProfessor_matricula(String.valueOf(i));
 		
 		pd.insert(p);
-		atual += anual;
+		
+		if(atual > anual44)
+			atual = 0L;
+		else
+			atual += anual;
 
 	}
+	
+	atual = 0L;
 	
 	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
 		
@@ -339,105 +347,159 @@ private static void insertProjeto(){
 		p.setAtividades_gerais(ATIVIDADES_GERAIS+i);
 		p.setDescricao(DESCRICAO+i);
 		p.setTipo(TIPO_PROJETO_SEMESTRAL);	
-		p.setInicio_vigencia(new Date(atual));//TODO
-		p.setStatus(true);//TODO
+		p.setInicio_vigencia(new Date(atual));
+		p.setData_aprovacao(new Date(atual));
+		p.setFim_vigencia(new Date(atual+sem));
+		p.setStatus(true);
 		p.setDisciplina_cod(MATA+i);
 		p.setProfessor_matricula(String.valueOf(i));
 		
 		pd.insert(p);
-		atual += sem;
+		
+		if(atual > anual44)
+			atual = 0L;
+		else
+			atual += sem;
 
 	}
 
 }
 
-//TODO to test?
 private static void insertRelatorio(){
 	
 	RelatorioDAO rd = new RelatorioDAO();
 	Relatorio r;
-	long atual = new Date(0).getTime();
-	long dia = 36000000L;
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long anual44 = 43L*anual;
 	
-for(int i=1; i<QTDE_INSERT; i++){
+	for(int i=1; i<QTDE_INSERT; i++){
 		
 		r = new Relatorio();
-		r.setData_criacao(new Date(atual));
+		r.setData_criacao(new Date(atual+anual+sem));
 		r.setArquivo_relatorio(ARQUIVO_RELATORIO+i);
-		
-
-		if(i % 2 == 0)
-			r.setTipo(RELATORIO_MONITOR);
-		else{
-			
-			r.setTipo(RELATORIO_PROFESSOR);
-			r.setNota_conceito(i%10);
-					
-		}
-		
+		r.setTipo(RELATORIO_MONITOR);		
 		r.setDescricao(DESCRICAO+i);
 		r.setProjeto_cod(i);
 		
 		rd.insert(r);
-		atual += dia;
+		
+		if(atual > anual44)
+			atual = 0L;
+		else
+			atual += anual;
 
 	}
+
+	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
+		
+		r = new Relatorio();
+		r.setData_criacao(new Date(atual+anual));
+		r.setArquivo_relatorio(ARQUIVO_RELATORIO+i);
+		r.setDescricao(DESCRICAO+i);
+		r.setProjeto_cod(i);
+		r.setTipo(RELATORIO_PROFESSOR);
+		
+		if(i%2 == 0)
+			r.setNota_conceito(7.0);
+		else
+			r.setNota_conceito(9.4);
+		
+		rd.insert(r);
+		
+		if(atual > anual44)
+			atual = 0L;
+		else
+			atual += sem;
+		
+	}
+
 }
 
 
-//TODO to test? verifying data
 private static void insertEdital(){
 	
 	EditalDAO ed = new EditalDAO();
 	Edital e;
-	long atual =1412713442387L; // October 7th, 2014
-	long sem = 36000000L*180;
-	long dia10 = 36000000L*10;
-	long anual = 2*sem;
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long dia10 = 1000L*60L*60L*24L*10L;
+	long anual44 = 43L*anual;
+
 	
-for(int i=1; i<QTDE_INSERT/2; i++){
+	for(int i=1; i<QTDE_INSERT/2; i++){
 		
 		e = new Edital();
 		e.setData_inicio(new Date(atual+=dia10));
-		e.setData_fim(new Date(atual+10));
+		e.setData_fim(new Date(atual+dia10));
 		e.setInformacoes_adicionais(INFORMACOES_ADICIONAIS+i);
 		e.setDocumentos_necessarios(DOCUMENTOS_NECESSARIOS+i);
 		
 		ed.insert(e);
-		atual += anual;
+		
+		if(atual > anual44)
+			atual = 0L;
+		else
+			atual += anual;
 
+	}
+
+	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
+		
+		e = new Edital();
+		e.setData_inicio(new Date(atual+=dia10));
+		e.setData_fim(new Date(atual+dia10));
+		e.setInformacoes_adicionais(INFORMACOES_ADICIONAIS+i);
+		e.setDocumentos_necessarios(DOCUMENTOS_NECESSARIOS+i);
+		
+		ed.insert(e);
+		
+		if(atual > anual44)
+			atual = 0L;
+		else
+			atual += sem;
+		
 	}
 }
 
-//TODO update projeto with the created editais
-
-//TODO to test? continue
-//it must update the projects before (status), before creating
-//the edital, update the data_aprovacao e etc tambem!
 private static void insertBolsa(){
-	long atual =1412713442387L; // October 7th, 2014
+
 	BolsaDAO bd = new BolsaDAO();
 	Bolsa b;
-	long sem = 36000000L*180;
-	long anual = 2*sem;
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long anual44 = 43L*anual;
 	
-for(int i=1; i<(QTDE_INSERT/100); i++){
+for(int i=1; i<(QTDE_INSERT/2); i++){
 		
 	b = new Bolsa();
 	b.setInicio_vigencia(new Date(atual));
 	b.setFim_vigencia(new Date(atual += anual));
+	b.setProjeto_cod(i);
+	b.setValor(400.00);
 	
 	bd.insert(b);
+	
+	if(atual > anual44)
+		atual = 0L;
 
 	}
 	
-	for(int i=QTDE_INSERT/100; i<QTDE_INSERT; i++){
+	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
 		
 		b = new Bolsa();
 		b.setInicio_vigencia(new Date(atual));
 		b.setFim_vigencia(new Date(atual += sem));
+		b.setProjeto_cod(i);
+		b.setValor(400.00);
 		
 		bd.insert(b);
+		
+		if(atual > anual44)
+			atual = 0L;
 
 	}
 
@@ -454,8 +516,12 @@ for(int i=1; i<(QTDE_INSERT/100); i++){
 		insertTurmaPossuiHorario();
 		insertProfessor();
 		insertProfessorLecionaTurma();
-		insertProjeto();*/
+		insertProjeto();
 		insertRelatorio();
+		insertEdital();
+		insertBolsa();*/
+		
+		
 		
 		
 	}
