@@ -41,7 +41,7 @@ import model.persistence.VoluntarioProjetoDAO;
 
 public class InsertScript {
 	
-	private static final int QTDE_INSERT = 200;
+	private static final int QTDE_INSERT = 5000;
 	private static final String NOME = "NOME";
 	private static final String MATA = "MATA";
 	private static final String MATRICULA = "MAT";
@@ -700,7 +700,7 @@ for(int i=1; i<(QTDE_INSERT/2); i++){
 	
 	public static void main(String args[]){
 		
-		insertDepartamento();
+		/*insertDepartamento();
 		insertDisciplina();
 		insertHorario();
 		insertSemestre();
@@ -714,7 +714,7 @@ for(int i=1; i<(QTDE_INSERT/2); i++){
 		insertBolsa();
 		insertAluno();
 		insertInscricao();
-		insertVoluntaioProjeto();//insere voluntario e voluntario_projeto
+		insertVoluntaioProjeto();//insere voluntario e voluntario_projeto*/
 		insertBolsista();
 		insertBolsaPertenceBolsista();
 		

@@ -16,7 +16,7 @@ public class BolsistaDAO {
 			try {
 				
 				preparedStatement = DB.getConnectionDB().prepareStatement("insert into " +
-					DB.getDbName()+".bolsa_pertence_bolsista values (?, ?, ?, ?)");
+					DB.getDbName()+".bolsista values (?, ?, ?, ?)");
 				
 				preparedStatement.setString(1, b.getMatricula());
 				preparedStatement.setString(2, b.getConta_corrente());
