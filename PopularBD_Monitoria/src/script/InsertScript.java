@@ -2,11 +2,15 @@ package script;
 
 import java.util.Date;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
+import model.Aluno;
 import model.Bolsa;
 import model.Departamento;
 import model.Disciplina;
 import model.Edital;
 import model.Horario;
+import model.Inscricao;
 import model.Professor;
 import model.ProfessorLecionaTurma;
 import model.Projeto;
@@ -14,11 +18,15 @@ import model.Relatorio;
 import model.Semestre;
 import model.Turma;
 import model.TurmaPossuiHorario;
+import model.Voluntario;
+import model.VoluntarioProjeto;
+import model.persistence.AlunoDAO;
 import model.persistence.BolsaDAO;
 import model.persistence.DepartamentoDAO;
 import model.persistence.DisciplinaDAO;
 import model.persistence.EditalDAO;
 import model.persistence.HorarioDAO;
+import model.persistence.InscricaoDAO;
 import model.persistence.ProfessorDAO;
 import model.persistence.ProfessorLecionaTurmaDAO;
 import model.persistence.ProjetoDAO;
@@ -26,30 +34,35 @@ import model.persistence.RelatorioDAO;
 import model.persistence.SemestreDAO;
 import model.persistence.TurmaDAO;
 import model.persistence.TurmaPossuiHorarioDAO;
+import model.persistence.VoluntarioDAO;
+import model.persistence.VoluntarioProjetoDAO;
 
 public class InsertScript {
 	
 	private static final int QTDE_INSERT = 200;
-	private static final String NOME = "nome";
+	private static final String NOME = "NOME";
 	private static final String MATA = "MATA";
+	private static final String MATRICULA = "MAT";
+	private static final String CPF = "CPF";
 	private static final String RDE = "DE";
 	private static final String R40 = "40H";
 	private static final String R20 = "20H";
-	private static final String ATIVIDADES_GERAIS = "Atividades Gerais ";
-	private static final String DESCRICAO = "Descricao ";
+	private static final String ATIVIDADES_GERAIS = "ATIVIDADES GERAIS ";
+	private static final String DESCRICAO = "DESCRICAO ";
 	private static final String TIPO_PROJETO_SEMESTRAL = "S";
 	private static final String TIPO_PROJETO_ANUAL = "A";
-	private static final String ARQUIVO_RELATORIO = "Relatótio ";
+	private static final String ARQUIVO_RELATORIO = "RELATORIO ";
 	private static final String RELATORIO_PROFESSOR = "P";
 	private static final String RELATORIO_MONITOR= "M";
-	private static final String INFORMACOES_ADICIONAIS= "Informações Adicionais ";
-	private static final String DOCUMENTOS_NECESSARIOS= "Documentos Necessários ";
-
+	private static final String INFORMACOES_ADICIONAIS= "INFORMACOES ADICIONAIS ";
+	private static final String DOCUMENTOS_NECESSARIOS= "DOCUMENTOS NECESSARIOS ";
+	
 	private static final long HOUR = 3600000;
 	private static final long DIA = 3600000L*24;
 	private static final long MES = 3600000L*24*30L;
 	private static final long ANO = 3600000L*24*30*12;
 	private static final int QTDE_DIAS = 15;
+	public static final double SEM_NOTA = -1;
 	
 	
 	private static void insertDepartamento(){
@@ -339,7 +352,7 @@ private static void insertProjeto(){
 
 	}
 	
-	atual = 0L;
+	//atual = 0L;
 	
 	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
 		
@@ -505,6 +518,120 @@ for(int i=1; i<(QTDE_INSERT/2); i++){
 
 }
 
+private static void insertAluno(){
+	
+	Aluno a;
+	AlunoDAO ad = new AlunoDAO();
+	
+	for(int i=1; i<QTDE_INSERT; i++){
+		
+		a = new Aluno();
+		a.setCpf(CPF+i);
+		a.setMatricula(MATRICULA+i);
+		a.setNome(NOME+i);
+		ad.insert(a);
+		
+	}
+	
+}
+
+private static void insertInscricao(){
+	
+	Inscricao i;
+	InscricaoDAO id = new InscricaoDAO();
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long anual44 = 43L*anual;
+	
+for(int j=1; j<(QTDE_INSERT/2); j++){
+		
+	i = new Inscricao();
+	i.setAluno_matricula(MATRICULA+j);
+	i.setData_inscricao(new Date(atual));
+	atual += anual;
+	i.setNota_processo_seletivo(SEM_NOTA);
+	i.setProjeto_cod(j);
+	id.insert(i);
+	
+	if(atual > anual44)
+		atual = 0L;
+
+	}
+	
+	for(int j=QTDE_INSERT/2; j<QTDE_INSERT; j++){
+		
+		i = new Inscricao();
+		i.setAluno_matricula(MATRICULA+j);
+		i.setData_inscricao(new Date(atual));
+		atual += sem;
+		i.setNota_processo_seletivo(SEM_NOTA);
+		i.setProjeto_cod(j);
+		id.insert(i);
+		
+		if(atual > anual44)
+			atual = 0L;
+
+	}
+	
+}
+
+//insert in the table voluntario and in the table voluntario_projeto
+private static void insertVoluntaioProjeto(){
+	
+	
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long anual44 = 43L*anual;
+	Voluntario v;
+	VoluntarioProjeto vp;
+	VoluntarioDAO vd = new VoluntarioDAO();
+	VoluntarioProjetoDAO vpd = new VoluntarioProjetoDAO();
+	
+for(int j=1; j<(QTDE_INSERT/2); j++){
+		
+	v = new Voluntario();
+	vp = new VoluntarioProjeto();
+	
+	v.setMatricula(MATRICULA+j);
+	vd.insert(v);
+	
+	vp.setData_inicio(new Date(atual+15*DIA));
+	vp.setData_fim(new Date((atual+15*DIA)+sem));
+	vp.setProjeto_cod(j);
+	vp.setVoluntario_matricula(MATRICULA+j);
+	vpd.insert(vp);
+	
+	atual += anual;
+	
+	if(atual > anual44)
+		atual = 0L;
+
+	}
+	
+	for(int j=QTDE_INSERT/2; j<QTDE_INSERT; j++){
+		
+		v = new Voluntario();
+		vp = new VoluntarioProjeto();
+		
+		v.setMatricula(MATRICULA+j);
+		vd.insert(v);
+		
+		vp.setData_inicio(new Date(atual+15*DIA));
+		vp.setData_fim(new Date((atual+15*DIA)+sem));
+		vp.setProjeto_cod(j);
+		vp.setVoluntario_matricula(MATRICULA+j);
+		vpd.insert(vp);
+		
+		atual += sem;
+		
+		if(atual > anual44)
+			atual = 0L;
+
+	}
+	
+}
 	
 	public static void main(String args[]){
 		
@@ -519,10 +646,11 @@ for(int i=1; i<(QTDE_INSERT/2); i++){
 		insertProjeto();
 		insertRelatorio();
 		insertEdital();
-		insertBolsa();*/
-		
-		
-		
+		insertBolsa();
+		insertAluno();
+		insertInscricao();
+		insertVoluntaioProjeto();*/
+			
 		
 	}
 

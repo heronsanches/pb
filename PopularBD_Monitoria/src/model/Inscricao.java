@@ -20,8 +20,8 @@ public class Inscricao {
 	/**date not null */
 	private Date data_inscricao;
 	
-	/**decimal(2,2) */
-	private float nota_processo_seletivo;
+	/**decimal(4,2) */
+	private double nota_processo_seletivo;
 
 	
 	//setters and getters
@@ -49,11 +49,11 @@ public class Inscricao {
 		this.data_inscricao = data_inscricao;
 	}
 
-	public float getNota_processo_seletivo() {
+	public double getNota_processo_seletivo() {
 		return nota_processo_seletivo;
 	}
 
-	public void setNota_processo_seletivo(float nota_processo_seletivo) {
+	public void setNota_processo_seletivo(double nota_processo_seletivo) {
 		this.nota_processo_seletivo = nota_processo_seletivo;
 	}
 
