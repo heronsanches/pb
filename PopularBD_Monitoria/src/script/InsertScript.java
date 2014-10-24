@@ -2,10 +2,10 @@ package script;
 
 import java.util.Date;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import model.Aluno;
 import model.Bolsa;
+import model.BolsaPertenceBolsista;
+import model.Bolsista;
 import model.Departamento;
 import model.Disciplina;
 import model.Edital;
@@ -22,6 +22,8 @@ import model.Voluntario;
 import model.VoluntarioProjeto;
 import model.persistence.AlunoDAO;
 import model.persistence.BolsaDAO;
+import model.persistence.BolsaPertenceBolsistaDAO;
+import model.persistence.BolsistaDAO;
 import model.persistence.DepartamentoDAO;
 import model.persistence.DisciplinaDAO;
 import model.persistence.EditalDAO;
@@ -56,6 +58,10 @@ public class InsertScript {
 	private static final String RELATORIO_MONITOR= "M";
 	private static final String INFORMACOES_ADICIONAIS= "INFORMACOES ADICIONAIS ";
 	private static final String DOCUMENTOS_NECESSARIOS= "DOCUMENTOS NECESSARIOS ";
+	private static final String CONTA= "CONTA";
+	private static final String AGENCIA= "AGEN";
+	private static final String BANCO= "BANCO DO BRASIL";
+
 	
 	private static final long HOUR = 3600000;
 	private static final long DIA = 3600000L*24;
@@ -632,10 +638,69 @@ for(int j=1; j<(QTDE_INSERT/2); j++){
 	}
 	
 }
+
+private static void insertBolsista(){
+	Bolsista b;
+	BolsistaDAO bd = new BolsistaDAO();
+	
+	for(int i=1; i<QTDE_INSERT; i++){
+		
+		b = new Bolsista();
+		b.setAgencia(AGENCIA+i);
+		b.setBanco(BANCO);
+		b.setConta_corrente(CONTA+i);
+		b.setMatricula(MATRICULA+i);
+		bd.insert(b);
+		
+	}
+	
+}
+
+private static void insertBolsaPertenceBolsista(){
+	
+	BolsaPertenceBolsista bpb;
+	BolsaPertenceBolsistaDAO bpbd = new BolsaPertenceBolsistaDAO();
+	
+	long atual = 0L;
+	long sem = 60000L*60L*24L*30L*6L;
+	long anual = 2L*sem;
+	long anual44 = 43L*anual;
+	
+for(int i=1; i<(QTDE_INSERT/2); i++){
+	
+	bpb = new BolsaPertenceBolsista();
+	bpb.setBolsa_cod(i);
+	bpb.setBolsista_matricula(MATRICULA+i);
+	bpb.setData_fim(new Date(atual+sem));
+	bpb.setData_inicio(new Date(atual));
+	bpbd.insert(bpb);
+	atual += anual;
+	
+	if(atual > anual44)
+		atual = 0L;
+
+	}
+	
+	for(int i=QTDE_INSERT/2; i<QTDE_INSERT; i++){
+		
+		bpb = new BolsaPertenceBolsista();
+		bpb.setBolsa_cod(i);
+		bpb.setBolsista_matricula(MATRICULA+i);
+		bpb.setData_fim(new Date(atual+sem));
+		bpb.setData_inicio(new Date(atual));
+		bpbd.insert(bpb);
+		atual += sem;
+		
+		if(atual > anual44)
+			atual = 0L;
+
+	}
+	
+}
 	
 	public static void main(String args[]){
 		
-		/*insertDepartamento();
+		insertDepartamento();
 		insertDisciplina();
 		insertHorario();
 		insertSemestre();
@@ -649,8 +714,9 @@ for(int j=1; j<(QTDE_INSERT/2); j++){
 		insertBolsa();
 		insertAluno();
 		insertInscricao();
-		insertVoluntaioProjeto();*/
-			
+		insertVoluntaioProjeto();//insere voluntario e voluntario_projeto
+		insertBolsista();
+		insertBolsaPertenceBolsista();
 		
 	}
 
